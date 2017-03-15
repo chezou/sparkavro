@@ -19,7 +19,7 @@
 #' sc <- spark_connect(master = "spark://HOST:PORT")
 #' df <- spark_read_avro(
 #'   sc,
-#'   system.file("samples/sample.avro", package = "sparkavro"),
+#'   "samples/sample.avro",
 #'   repartition = FALSE,
 #'   memory = FALSE,
 #'   overwrite = FALSE
