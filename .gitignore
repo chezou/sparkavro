@@ -1,0 +1,17 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio files
+.Rproj.user
+
+# Spark log
+log4j.spark*
+/configure
+/bin/
+.cache-main
+.settings
+.classpath
+
+derby.log
