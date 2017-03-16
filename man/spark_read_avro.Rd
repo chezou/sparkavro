@@ -28,7 +28,7 @@ already exists?}
 Reads a Avro file into Apache Spark using sparklyr.
 }
 \examples{
-
+\dontrun{
 ## If you haven't got a Spark cluster, you can install Spark locally like this
 library(sparklyr)
 spark_install(version = "2.0.1")
@@ -44,5 +44,5 @@ df <- spark_read_avro(
 )
 
 spark_disconnect(sc)
-
+}
 }
