@@ -17,6 +17,7 @@ test_that("read existing avro", {
 test_that("write Spark DataFrame into avro", {
   skip_on_cran()
 
+  df <- spark_read_avro(sc, "twitter", system.file("data", package="sparkavro"), "twitter.avro")
   df2 <- df %>% filter(username == "miguno")
   filename <- tempfile("test", fileext=".avro")
   spark_write_avro(df2, filename)
