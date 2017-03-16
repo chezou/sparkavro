@@ -100,7 +100,7 @@ spark_write_avro.spark_jobj <- function(x, path, mode = NULL, options = list()) 
 }
 
 #' @import sparklyr
-spark_data_write_avro <- function(df, path, mode = NULL, csvOptions = list()) {
+spark_data_write_avro <- function(df, path, mode = NULL, writeOptions = list()) {
   options <- sparklyr::invoke(df, "write")
 
   if (!is.null(mode)) {
@@ -117,8 +117,8 @@ spark_data_write_avro <- function(df, path, mode = NULL, csvOptions = list()) {
     }
   }
 
-  lapply(names(csvOptions), function(csvOptionName) {
-    options <<- sparklyr::invoke(options, "option", csvOptionName, csvOptions[[csvOptionName]])
+  lapply(names(writeOptions), function(writeOptionName) {
+    options <<- sparklyr::invoke(options, "option", csvOptionName, writeOptions[[writeOptionName]])
   })
 
   sparklyr::invoke(options, "format", "com.databricks.spark.avro") %>% sparklyr::invoke("save", path)
