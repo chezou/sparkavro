@@ -118,7 +118,7 @@ spark_data_write_avro <- function(df, path, mode = NULL, writeOptions = list()) 
   }
 
   lapply(names(writeOptions), function(writeOptionName) {
-    options <<- sparklyr::invoke(options, "option", csvOptionName, writeOptions[[writeOptionName]])
+    options <<- sparklyr::invoke(options, "option", writeOptionName, writeOptions[[writeOptionName]])
   })
 
   sparklyr::invoke(options, "format", "com.databricks.spark.avro") %>% sparklyr::invoke("save", path)

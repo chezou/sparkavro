@@ -4,8 +4,8 @@
 \alias{spark_read_avro}
 \title{Reads a Avro File into Apache Spark}
 \usage{
-spark_read_avro(sc, name, path, repartition = 0L, memory = TRUE,
-  overwrite = TRUE, ...)
+spark_read_avro(sc, name, path, readOptions = list(), repartition = 0L,
+  memory = TRUE, overwrite = TRUE, ...)
 }
 \arguments{
 \item{sc}{An active \code{spark_connection}.}
@@ -14,6 +14,8 @@ spark_read_avro(sc, name, path, repartition = 0L, memory = TRUE,
 
 \item{path}{The path to the file. Needs to be accessible from the cluster.
 Supports the \samp{"hdfs://"}, \samp{"s3n://"} and \samp{"file://"} protocols.}
+
+\item{readOptions}{A list of strings with additional options.}
 
 \item{repartition}{The number of partitions used to distribute the
 generated table. Use 0 (the default) to avoid partitioning.}
