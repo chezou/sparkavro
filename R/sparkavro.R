@@ -58,7 +58,6 @@ spark_read_avro <- function(sc,
   }
 
   dplyr::tbl(sc, name)
-  invisible(NULL)
 }
 
 #' Write a Spark DataFrame to a Avro file
