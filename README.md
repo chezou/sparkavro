@@ -1,5 +1,5 @@
 # sparkavro
-Load Avro data into Spark with sparklyr
+Load Avro data into Spark with sparklyr. It is a wrapper of [spark-avro](https://github.com/databricks/spark-avro)
 
 ## Usage
 
