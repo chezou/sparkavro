@@ -41,8 +41,7 @@ spark_read_avro <- function(sc,
                             readOptions = list(),
                             repartition = 0L,
                             memory = TRUE,
-                            overwrite = TRUE,
-                            ...) {
+                            overwrite = TRUE) {
   if (overwrite && name %in% dbListTables(sc)) {
     dbRemoveTable(sc, name)
   }
@@ -73,8 +72,7 @@ spark_read_avro <- function(sc,
 #' Serialize a Spark DataFrame to the
 #' \href{https://parquet.apache.org/}{Parquet} format.
 #'
-#' @param sc An active \code{spark_connection}.
-#' @param name The name to assign to the newly generated table.
+#' @param x A Spark DataFrame or dplyr operation
 #' @param path The path to the file. Needs to be accessible from the cluster.
 #'   Supports the \samp{"hdfs://"}, \samp{"s3n://"} and \samp{"file://"} protocols.
 #' @param mode Specifies the behavior when data or table already exists.

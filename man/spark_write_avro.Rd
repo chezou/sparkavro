@@ -7,16 +7,14 @@
 spark_write_avro(x, path, mode = NULL, options = list())
 }
 \arguments{
+\item{x}{A Spark DataFrame or dplyr operation}
+
 \item{path}{The path to the file. Needs to be accessible from the cluster.
 Supports the \samp{"hdfs://"}, \samp{"s3n://"} and \samp{"file://"} protocols.}
 
 \item{mode}{Specifies the behavior when data or table already exists.}
 
 \item{options}{A list of strings with additional options. See \url{http://spark.apache.org/docs/latest/sql-programming-guide.html#configuration}.}
-
-\item{sc}{An active \code{spark_connection}.}
-
-\item{name}{The name to assign to the newly generated table.}
 }
 \description{
 Serialize a Spark DataFrame to the
