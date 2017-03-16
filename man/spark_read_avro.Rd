@@ -5,7 +5,7 @@
 \title{Reads a Avro File into Apache Spark}
 \usage{
 spark_read_avro(sc, name, path, repartition = 0L, memory = TRUE,
-  overwrite = TRUE, group = FALSE, parse = FALSE, ...)
+  overwrite = TRUE, ...)
 }
 \arguments{
 \item{sc}{An active \code{spark_connection}.}
@@ -29,11 +29,15 @@ Reads a Avro file into Apache Spark using sparklyr.
 }
 \examples{
 
+## If you haven't got a Spark cluster, you can install Spark locally like this
 library(sparklyr)
-sc <- spark_connect(master = "spark://HOST:PORT")
+spark_install(version = "2.0.1")
+
+sc <- spark_connect(master = "local")
 df <- spark_read_avro(
   sc,
-  system.file("samples/sample.avro", package = "sparkavro"),
+  "twitter",
+  system.file("extdata/twitter.avro", package = "sparkavro"),
   repartition = FALSE,
   memory = FALSE,
   overwrite = FALSE

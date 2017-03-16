@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+derby.log$
+sparkavro.Rcheck$
+log4j.spark.log.*$
+^README\.md$

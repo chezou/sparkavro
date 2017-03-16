@@ -12,5 +12,6 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     sparklyr,
+    dplyr,
     DBI
 RoxygenNote: 6.0.0

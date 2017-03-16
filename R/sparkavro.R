@@ -14,47 +14,50 @@
 #'   already exists?
 #'
 #' @examples
-#'
+#' \dontrun{
+#' ## If you haven't got a Spark cluster, you can install Spark locally like this
 #' library(sparklyr)
-#' sc <- spark_connect(master = "spark://HOST:PORT")
+#' spark_install(version = "2.0.1")
+#'
+#' sc <- spark_connect(master = "local")
 #' df <- spark_read_avro(
 #'   sc,
-#'   "samples/sample.avro",
+#'   "twitter",
+#'   system.file("extdata/twitter.avro", package = "sparkavro"),
 #'   repartition = FALSE,
 #'   memory = FALSE,
 #'   overwrite = FALSE
 #' )
 #'
 #' spark_disconnect(sc)
-#'
-#' @export
+#' }
+#' @import sparklyr
 #' @import DBI
+#' @export
 spark_read_avro <- function(sc,
                             name,
                             path,
                             repartition = 0L,
                             memory = TRUE,
                             overwrite = TRUE,
-                            group = FALSE,
-                            parse = FALSE,
                             ...) {
   if (overwrite && name %in% dbListTables(sc)) {
     dbRemoveTable(sc, name)
   }
 
-  df <- hive_context(sc) %>%
-    invoke("read") %>%
-    invoke("format", "com.databricks.spark.avro") %>%
-    invoke("load", list(spark_normalize_path(path)))
+  df <- sparklyr::hive_context(sc) %>%
+    sparklyr::invoke("read") %>%
+    sparklyr::invoke("format", "com.databricks.spark.avro") %>%
+    sparklyr::invoke("load", list(spark_normalize_path(path)))
 
-  invoke(df, "registerTempTable", name)
+  sparklyr::invoke(df, "registerTempTable", name)
 
   if (memory) {
-    dbGetQuery(sc, paste("CACHE TABLE", DBI::dbQuoteIdentifier(sc, name)))
-    dbGetQuery(sc, paste("SELECT count(*) FROM", DBI::dbQuoteIdentifier(sc, name)))
+    DBI::dbGetQuery(sc, paste("CACHE TABLE", DBI::dbQuoteIdentifier(sc, name)))
+    DBI::dbGetQuery(sc, paste("SELECT count(*) FROM", DBI::dbQuoteIdentifier(sc, name)))
   }
 
-  tbl(sc, name)
+  dplyr::tbl(sc, name)
   invisible(NULL)
 }
 
@@ -79,42 +82,39 @@ spark_write_avro <- function(x, path, mode = NULL, options = list()) {
 
 #' @export
 spark_write_avro.tbl_spark <- function(x, path, mode = NULL, options = list()) {
-  sqlResult <- spark_sqlresult_from_dplyr(x)
+  sqlResult <- sparklyr::spark_sqlresult_from_dplyr(x)
   spark_data_write_avro(sqlResult, spark_normalize_path(path), mode, options)
 }
 
 #' @export
 spark_write_avro.spark_jobj <- function(x, path, mode = NULL, options = list()) {
-  spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
+  sparklyr::spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
   spark_data_write_avro(x, normalizePath(path), mode, options)
 }
 
+#' @import sparklyr
 spark_data_write_avro <- function(df, path, mode = NULL, csvOptions = list()) {
-  options <- invoke(df, "write")
+  options <- sparklyr::invoke(df, "write")
 
   if (!is.null(mode)) {
     if (is.list(mode)) {
       lapply(mode, function(m) {
-        options <<- invoke(options, "mode", m)
+        options <<- sparklyr::invoke(options, "mode", m)
       })
     }
     else if (is.character(mode)) {
-      options <- invoke(options, "mode", mode)
+      options <- sparklyr::invoke(options, "mode", mode)
     }
     else {
       stop("Unsupported type ", typeof(mode), " for mode parameter.")
     }
   }
 
-  if(!is.null(options)) {
-    options <<- invoke(options, "options", csvOptions)
-  }
-
   lapply(names(csvOptions), function(csvOptionName) {
-    options <<- invoke(options, "option", csvOptionName, csvOptions[[csvOptionName]])
+    options <<- sparklyr::invoke(options, "option", csvOptionName, csvOptions[[csvOptionName]])
   })
 
-  invoke(options, "format", "com.databricks.spark.avro") %>% invoke("save", path)
+  sparklyr::invoke(options, "format", "com.databricks.spark.avro") %>% sparklyr::invoke("save", path)
   invisible(TRUE)
 }
 
