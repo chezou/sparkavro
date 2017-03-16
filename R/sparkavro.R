@@ -93,7 +93,7 @@ spark_write_avro.tbl_spark <- function(x, path, mode = NULL, options = list()) {
 
 #' @export
 spark_write_avro.spark_jobj <- function(x, path, mode = NULL, options = list()) {
-  sparklyr::spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
+  spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
   spark_data_write_avro(x, normalizePath(path), mode, options)
 }
 
@@ -157,4 +157,20 @@ spark_sqlresult_from_dplyr <- function(x) {
 
   sql <- dplyr::sql_render(x)
   sqlResult <- invoke(hive_context(sc), "sql", as.character(sql))
+}
+
+# Following code are taken from https://github.com/rstudio/sparklyr/blob/v0.5.3/R/data_interface.R#L282-L294
+# because it is not exported.
+spark_expect_jobj_class <- function(jobj, expectedClassName) {
+  class <- invoke(jobj, "getClass")
+  className <- invoke(class, "getName")
+  if (!identical(className, expectedClassName)) {
+    stop(paste(
+      "This operation is only supported on",
+      expectedClassName,
+      "jobjs but found",
+      className,
+      "instead.")
+    )
+  }
 }
