@@ -6,6 +6,7 @@
 #' @param name The name to assign to the newly generated table.
 #' @param path The path to the file. Needs to be accessible from the cluster.
 #'   Supports the \samp{"hdfs://"}, \samp{"s3n://"} and \samp{"file://"} protocols.
+#' @param readOptions A list of strings with additional options.
 #' @param repartition The number of partitions used to distribute the
 #'   generated table. Use 0 (the default) to avoid partitioning.
 #' @param memory Boolean; should the data be loaded eagerly into memory? (That
@@ -37,6 +38,7 @@
 spark_read_avro <- function(sc,
                             name,
                             path,
+                            readOptions = list(),
                             repartition = 0L,
                             memory = TRUE,
                             overwrite = TRUE,
@@ -45,10 +47,16 @@ spark_read_avro <- function(sc,
     dbRemoveTable(sc, name)
   }
 
-  df <- sparklyr::hive_context(sc) %>%
+  options <- sparklyr::hive_context(sc) %>%
     sparklyr::invoke("read") %>%
-    sparklyr::invoke("format", "com.databricks.spark.avro") %>%
-    sparklyr::invoke("load", list(spark_normalize_path(path)))
+    sparklyr::invoke("format", "com.databricks.spark.avro")
+
+
+  lapply(names(readOptions), function(optionName) {
+    options <<- invoke(options, "option", optionName, readOptions[[optionName]])
+  })
+
+  df <- sparklyr::invoke(options, "load", list(spark_normalize_path(path)))
 
   sparklyr::invoke(df, "registerTempTable", name)
 
