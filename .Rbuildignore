@@ -4,3 +4,4 @@ derby.log$
 sparkavro.Rcheck$
 log4j.spark.log.*$
 ^README\.md$
+^\.travis\.yml$

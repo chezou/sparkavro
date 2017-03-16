@@ -15,3 +15,5 @@ Imports:
     dplyr,
     DBI
 RoxygenNote: 6.0.0
+Suggests:
+    testthat

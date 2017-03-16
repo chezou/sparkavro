@@ -1,4 +1,7 @@
+[![Travis-CI Build Status](https://travis-ci.org/chezou/sparkavro.svg?branch=master)](https://travis-ci.org/chezou/sparkavro)
+
 # sparkavro
+
 Load Avro data into Spark with sparklyr. It is a wrapper of [spark-avro](https://github.com/databricks/spark-avro)
 
 ## Usage
