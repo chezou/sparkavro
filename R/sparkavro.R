@@ -81,7 +81,7 @@ spark_write_avro <- function(x, path, mode = NULL, options = list()) {
 
 #' @export
 spark_write_avro.tbl_spark <- function(x, path, mode = NULL, options = list()) {
-  sqlResult <- sparklyr::spark_sqlresult_from_dplyr(x)
+  sqlResult <- spark_sqlresult_from_dplyr(x)
   spark_data_write_avro(sqlResult, spark_normalize_path(path), mode, options)
 }
 
@@ -131,4 +131,24 @@ spark_normalize_path <- function(path) {
   else {
     normalizePath(path, mustWork = FALSE)
   }
+}
+
+# Following codes are taken from https://github.com/rstudio/sparklyr/blob/v0.5.3/R/dplyr_spark_data.R#L26-L42
+# because they are not exported.
+spark_source_from_ops <- function(x) {
+  classList <- lapply(x, function(e) { attr(e, "class") } )
+
+  if (!all(lapply(classList, function(e) !("src" %in% e) || ("src_spark" %in% e)) == TRUE)) {
+    stop("This operation does not support multiple remote sources")
+  }
+
+  Filter(function(e) "src_spark" %in% attr(e, "class") , x)[[1]]
+}
+
+spark_sqlresult_from_dplyr <- function(x) {
+  sparkSource <- spark_source_from_ops(x)
+  sc <- spark_connection(sparkSource)
+
+  sql <- dplyr::sql_render(x)
+  sqlResult <- invoke(hive_context(sc), "sql", as.character(sql))
 }
