@@ -3,6 +3,7 @@ library(sparklyr)
 library(sparkavro)
 library(dplyr)
 if(!exists("sc")){
+  spark_install()
   sc <- spark_connect(master="local")
 }
 
