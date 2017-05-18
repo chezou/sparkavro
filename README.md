@@ -23,4 +23,4 @@ df <- spark_read_avro(sc, "test_table", "/user/foo/test.avro")
 spark_write_avro(df, "/tmp/output")
 ```
 
-Expamle data are from https://github.com/miguno/avro-cli-examples
+Example data are from https://github.com/miguno/avro-cli-examples
