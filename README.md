@@ -9,7 +9,7 @@ Load Avro data into Spark with sparklyr. It is a wrapper of [spark-avro](https:/
 Install using `{devtools}` as follows:
 
 ```r
-devtools::install_github("chezou/avrospark")
+devtools::install_github("chezou/sparkavro")
 ```
 
 ## Usage
