@@ -6,7 +6,7 @@ Author: Aki Ariga
 Maintainer: Aki Ariga <chezou@gmail.com>
 Description: Load Avro files into Apache Spark using 'sparklyr'. This
     allows to read files from Apache Avro <https://avro.apache.org/>.
-License: Apache License 2.0
+License: Apache License 2.0 | file LICENSE
 BugReports: https://github.com/chezou/sparkavro
 Encoding: UTF-8
 LazyData: true
