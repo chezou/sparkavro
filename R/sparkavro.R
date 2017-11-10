@@ -55,7 +55,7 @@ spark_read_avro <- function(sc,
     options <<- invoke(options, "option", optionName, readOptions[[optionName]])
   })
 
-  df <- sparklyr::invoke(options, "load", list(sparklyr:::spark_normalize_path(path)))
+  df <- sparklyr::invoke(options, "load", list(spark_normalize_path(path)))
 
   sparklyr::invoke(df, "registerTempTable", name)
 
@@ -87,13 +87,13 @@ spark_write_avro <- function(x, path, mode = NULL, options = list()) {
 
 #' @export
 spark_write_avro.tbl_spark <- function(x, path, mode = NULL, options = list()) {
-  sqlResult <- sparklyr:::spark_sqlresult_from_dplyr(x)
-  spark_data_write_avro(sqlResult, sparklyr:::spark_normalize_path(path), mode, options)
+  sqlResult <- spark_sqlresult_from_dplyr(x)
+  spark_data_write_avro(sqlResult, spark_normalize_path(path), mode, options)
 }
 
 #' @export
 spark_write_avro.spark_jobj <- function(x, path, mode = NULL, options = list()) {
-  sparklyr:::spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
+  spark_expect_jobj_class(x, "org.apache.spark.sql.DataFrame")
   spark_data_write_avro(x, normalizePath(path), mode, options)
 }
 
