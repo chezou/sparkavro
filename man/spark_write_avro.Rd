@@ -20,3 +20,4 @@ Supports the \samp{"hdfs://"}, \samp{"s3n://"} and \samp{"file://"} protocols.}
 Serialize a Spark DataFrame to the
 \href{https://parquet.apache.org/}{Parquet} format.
 }
+\concept{Spark serialization routines}
