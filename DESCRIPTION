@@ -1,7 +1,7 @@
 Package: sparkavro
 Type: Package
 Title: Load Avro file into 'Apache Spark'
-Version: 0.2.0
+Version: 0.2.0.9000
 Author: Aki Ariga
 Maintainer: Aki Ariga <chezou@gmail.com>
 Description: Load Avro Files into 'Apache Spark' using 'sparklyr'. This
