@@ -4,8 +4,15 @@
 \alias{spark_read_avro}
 \title{Reads a Avro File into Apache Spark}
 \usage{
-spark_read_avro(sc, name, path, readOptions = list(), repartition = 0L,
-  memory = TRUE, overwrite = TRUE)
+spark_read_avro(
+  sc,
+  name,
+  path,
+  readOptions = list(),
+  repartition = 0L,
+  memory = TRUE,
+  overwrite = TRUE
+)
 }
 \arguments{
 \item{sc}{An active \code{spark_connection}.}
