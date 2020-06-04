@@ -70,7 +70,7 @@ spark_read_avro <- function(sc,
 #' Write a Spark DataFrame to a Avro file
 #'
 #' Serialize a Spark DataFrame to the
-#' \href{https://parquet.apache.org/}{Parquet} format.
+#' \href{https://avro.apache.org/}{Avro} format.
 #'
 #' @param x A Spark DataFrame or dplyr operation
 #' @param path The path to the file. Needs to be accessible from the cluster.
